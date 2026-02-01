@@ -146,6 +146,50 @@ def create_app() -> Flask:
 
         return jsonify({"tools": result, "task": task})
 
+    @app.get("/privacy")
+    def privacy():
+        return render_template(
+            "privacy.html",
+            meta={
+                "title": "Privacy Policy — AI Tool Marketplace",
+                "description": "Privacy policy for AI Tool Marketplace.",
+                "path": url_for("privacy"),
+            },
+        )
+
+    @app.get("/terms")
+    def terms():
+        return render_template(
+            "terms.html",
+            meta={
+                "title": "Terms & Conditions — AI Tool Marketplace",
+                "description": "Terms and conditions for AI Tool Marketplace.",
+                "path": url_for("terms"),
+            },
+        )
+
+    @app.get("/about")
+    def about():
+        return render_template(
+            "about.html",
+            meta={
+                "title": "About Us — AI Tool Marketplace",
+                "description": "Learn about Aitoolhub and our mission to help you discover the best AI tools.",
+                "path": url_for("about"),
+            },
+        )
+
+    @app.get("/contact")
+    def contact():
+        return render_template(
+            "contact.html",
+            meta={
+                "title": "Contact Us — AI Tool Marketplace",
+                "description": "Contact Aitoolhub for tool suggestions, partnerships, bug reports, or general questions.",
+                "path": url_for("contact"),
+            },
+        )
+
     @app.get("/health")
     def health():
         return jsonify({"ok": True})
