@@ -1,7 +1,10 @@
 import json
 import os
 import re
+import smtplib
 from datetime import datetime
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from pathlib import Path
 
 import requests
@@ -122,6 +125,7 @@ def create_app() -> Flask:
             return redirect(url_for("submit_tool", error="missing"))
 
         save_submission(payload)
+        send_submission_email(payload)  # Send email notification
         return redirect(url_for("submit_tool", success="1"))
 
     @app.post("/api/recommend")
@@ -260,6 +264,61 @@ def save_submission(payload: dict) -> None:
 
     items.append(payload)
     SUBMISSIONS_PATH.write_text(json.dumps(items, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+def send_submission_email(payload: dict) -> None:
+    """Send email notification for new tool submission"""
+    try:
+        # Get Gmail app password from environment
+        gmail_password = os.getenv("GMAIL_APP_PASSWORD")
+        print(f"DEBUG: GMAIL_APP_PASSWORD loaded: {'Yes' if gmail_password else 'No'}")
+        
+        if not gmail_password:
+            print("ERROR: GMAIL_APP_PASSWORD not set in environment variables")
+            return
+        
+        # Create email message
+        msg = MIMEMultipart()
+        msg['From'] = "noreply@aitoolhub.com"
+        msg['To'] = "vasu934586@gmail.com"
+        msg['Subject'] = "New AI submit from AI tool hub"
+        
+        # Email body
+        body = f"""
+New AI Tool Submission Details:
+
+Tool Name: {payload.get('name', 'N/A')}
+URL: {payload.get('url', 'N/A')}
+Description: {payload.get('description', 'N/A')}
+Category: {payload.get('category', 'N/A')}
+Pricing: {payload.get('pricing_type', 'N/A')}
+Submitter Email: {payload.get('email', 'Not provided')}
+Submitted At: {payload.get('submitted_at', 'N/A')}
+
+---
+This is an automated notification from AI Tool Hub.
+"""
+        
+        msg.attach(MIMEText(body, 'plain'))
+        
+        print("DEBUG: Attempting to connect to Gmail SMTP...")
+        # Send email using Gmail SMTP
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        print("DEBUG: Connected to SMTP server")
+        server.starttls()
+        print("DEBUG: TLS started")
+        server.login("vasu934586@gmail.com", gmail_password)
+        print("DEBUG: Login successful")
+        server.send_message(msg)
+        print("DEBUG: Email sent successfully")
+        server.quit()
+        print("DEBUG: Connection closed")
+        
+    except Exception as e:
+        # Log error but don't break the submission process
+        print(f"ERROR: Failed to send email notification: {e}")
+        import traceback
+        print(f"ERROR: Traceback: {traceback.format_exc()}")
 
 
 def recommend_with_keywords(task: str, tools: list[dict]) -> list[str]:

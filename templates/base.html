@@ -13,31 +13,7 @@
     <meta property="og:description" content="{{ meta.description if meta and meta.description else '' }}" />
     <meta property="og:type" content="website" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: [
-                "ui-sans-serif",
-                "system-ui",
-                "-apple-system",
-                "Segoe UI",
-                "Inter",
-                "Roboto",
-                "Arial",
-                "Noto Sans",
-                "sans-serif",
-              ],
-            },
-            boxShadow: {
-              glass: "0 10px 30px rgba(0,0,0,0.12)",
-            },
-          },
-        },
-      };
-    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='tailwind.css') }}" />
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2000595047734179"
             crossorigin="anonymous"></script>
@@ -57,13 +33,13 @@
           <span class="text-base font-semibold tracking-tight text-white group-hover:text-white/90">Aitoolhub</span>
         </a>
 
-        <nav class="hidden items-center gap-6 md:flex">
-          <a class="nav-link" href="{{ url_for('tools_index') }}">Browse</a>
-          <a class="nav-link" href="{{ url_for('submit_tool') }}">Submit a tool</a>
-          <a class="nav-link" href="{{ url_for('about') }}">About Us</a>
-          <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
-          <a class="nav-link" href="{{ url_for('privacy') }}">Privacy Policy</a>
-          <a class="nav-link" href="{{ url_for('terms') }}">Terms & Conditions</a>
+        <nav class="hidden items-center gap-6 md:flex" style="display: flex !important; align-items: center; gap: 1.5rem;">
+          <a class="nav-link" href="{{ url_for('tools_index') }}" style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; font-weight: 500;">Browse tools</a>
+          <a class="nav-link" href="{{ url_for('submit_tool') }}" style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; font-weight: 500;">Submit</a>
+          <a class="nav-link" href="{{ url_for('about') }}" style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; font-weight: 500;">About Us</a>
+          <a class="nav-link" href="{{ url_for('contact') }}" style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; font-weight: 500;">Contact Us</a>
+          <a class="nav-link" href="{{ url_for('privacy') }}" style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; font-weight: 500;">Privacy Policy</a>
+          <a class="nav-link" href="{{ url_for('terms') }}" style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; font-weight: 500;">Terms & Conditions</a>
         </nav>
 
         <a
