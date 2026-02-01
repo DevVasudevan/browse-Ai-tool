@@ -92,3 +92,21 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* Dark theme for select dropdowns */
+select {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+select option {
+  background-color: #020617;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.5rem;
+}
+
+select:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+}
