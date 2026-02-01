@@ -110,3 +110,12 @@ select:focus {
   outline: none;
   border-color: rgba(255, 255, 255, 0.3);
 }
+
+/* Remove all underlines from links */
+a {
+  text-decoration: none !important;
+}
+
+a:hover {
+  text-decoration: none !important;
+}
