@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="mx-auto w-full max-w-6xl px-4 pt-12">
+    <div class="grid gap-8 md:grid-cols-12 md:items-center">
+      <div class="md:col-span-7">
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-xs font-semibold text-white/70 ring-1 ring-white/10">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+          Curated marketplace
+        </div>
+
+        <h1 class="mt-5 text-balance text-4xl font-semibold tracking-tight text-white md:text-6xl">
+          Find the Perfect AI Tool for Your Task
+        </h1>
+
+        <p class="mt-4 max-w-xl text-pretty text-base text-white/70 md:text-lg">
+          Search across categories, pricing, and use cases — then get smart recommendations instantly.
+        </p>
+
+        <div class="mt-7">
+          <form id="hero-search" class="glass-card flex flex-col gap-3 p-4 md:flex-row md:items-center" action="{{ url_for('tools_index') }}" method="get">
+            <input
+              class="w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-white/30"
+              type="text"
+              name="q"
+              id="hero-q"
+              placeholder="What do you want to do? (resume, marketing, coding, analytics...)"
+              autocomplete="off"
+            />
+            <button
+              class="inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-white/90"
+              type="submit"
+            >
+              Find AI Tools
+            </button>
+          </form>
+
+          <div id="hero-recs" class="mt-5 hidden">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-semibold text-white/80">Recommended for you</h2>
+              <a class="text-sm font-semibold text-white/60 hover:text-white" href="{{ url_for('tools_index') }}">Browse all</a>
+            </div>
+            <div id="hero-recs-grid" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-2">
+          <a class="chip" href="{{ url_for('tools_index', q='resume') }}">Resume</a>
+          <a class="chip" href="{{ url_for('tools_index', q='seo') }}">SEO</a>
+          <a class="chip" href="{{ url_for('tools_index', q='coding') }}">Coding</a>
+          <a class="chip" href="{{ url_for('tools_index', q='video') }}">Video</a>
+          <a class="chip" href="{{ url_for('tools_index', q='analytics') }}">Analytics</a>
+        </div>
+      </div>
+
+      <div class="md:col-span-5">
+        <div class="glass-card p-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-semibold text-white">Featured tools</h2>
+            <a class="text-sm font-semibold text-white/60 hover:text-white" href="{{ url_for('tools_index') }}">See all</a>
+          </div>
+          <div class="mt-4 grid gap-4">
+            {% for tool in featured %}
+              <a href="{{ url_for('tool_detail', slug=tool.slug) }}" class="group flex items-center gap-4 rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 hover:bg-white/10">
+                <div class="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/15">
+                  <span class="text-sm font-semibold">{{ tool.icon or 'AI' }}</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center justify-between gap-3">
+                    <p class="truncate text-sm font-semibold text-white">{{ tool.name }}</p>
+                    <span class="badge">{{ tool.pricing_type }}</span>
+                  </div>
+                  <p class="mt-0.5 truncate text-xs text-white/60">{{ tool.description }}</p>
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 w-full max-w-6xl px-4">
+    <div class="flex items-end justify-between gap-6">
+      <div>
+        <h2 class="text-2xl font-semibold tracking-tight text-white">Categories</h2>
+        <p class="mt-1 text-sm text-white/70">Browse by intent — then filter by pricing and popularity.</p>
+      </div>
+      <a class="hidden text-sm font-semibold text-white/60 hover:text-white md:inline" href="{{ url_for('tools_index') }}">Browse all tools</a>
+    </div>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {% for category in categories %}
+        <a href="{{ url_for('tools_index', category=category) }}" class="glass-card p-5 hover:translate-y-[-1px]">
+          <p class="text-sm font-semibold text-white">{{ category }}</p>
+          <p class="mt-2 text-sm text-white/60">Explore tools for {{ category.lower() }}.</p>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 w-full max-w-6xl px-4">
+    <div class="flex items-end justify-between gap-6">
+      <div>
+        <h2 class="text-2xl font-semibold tracking-tight text-white">Trending now</h2>
+        <p class="mt-1 text-sm text-white/70">What teams are trying this week.</p>
+      </div>
+      <a class="text-sm font-semibold text-white/60 hover:text-white" href="{{ url_for('tools_index', sort='trending') }}">View trending</a>
+    </div>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {% for tool in trending %}
+        {% include "_components/tool_card.html" %}
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

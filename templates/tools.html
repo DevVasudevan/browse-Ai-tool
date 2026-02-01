@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="mx-auto w-full max-w-6xl px-4 pt-10">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h1 class="text-3xl font-semibold tracking-tight text-white">Browse AI Tools</h1>
+        <p class="mt-2 text-sm text-white/70">Filter by category, pricing, and sort by what matters.</p>
+      </div>
+
+      <form class="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center" method="get" action="{{ url_for('tools_index') }}">
+        <input
+          class="w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 md:w-80"
+          type="text"
+          name="q"
+          placeholder="Search tools, use-cases, tags…"
+          value="{{ selected.q }}"
+        />
+
+        <select name="category" class="rounded-xl bg-white/5 px-4 py-3 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-white/30">
+          <option value="">All categories</option>
+          {% for c in categories %}
+            <option value="{{ c }}" {% if selected.category == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="pricing" class="rounded-xl bg-white/5 px-4 py-3 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-white/30">
+          <option value="">All pricing</option>
+          {% for p in pricing_types %}
+            <option value="{{ p }}" {% if selected.pricing == p %}selected{% endif %}>{{ p }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="sort" class="rounded-xl bg-white/5 px-4 py-3 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-white/30">
+          {% for s in sort_options %}
+            <option value="{{ s }}" {% if selected.sort == s %}selected{% endif %}>Sort: {{ s|capitalize }}</option>
+          {% endfor %}
+        </select>
+
+        <button class="inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-white/90" type="submit">
+          Apply
+        </button>
+      </form>
+    </div>
+
+    <div class="mt-8">
+      {% if tools|length == 0 %}
+        <div class="glass-card p-8">
+          <p class="text-sm font-semibold text-white">No tools found</p>
+          <p class="mt-2 text-sm text-white/70">Try changing filters or searching a different task.</p>
+        </div>
+      {% else %}
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for tool in tools %}
+            {% include "_components/tool_card.html" %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{{ meta.title if meta and meta.title else "AI Tool Marketplace" }}</title>
+    <meta name="description" content="{{ meta.description if meta and meta.description else '' }}" />
+
+    <link rel="canonical" href="{{ request.url_root.rstrip('/') }}{{ meta.path if meta and meta.path else request.path }}" />
+
+    <meta property="og:title" content="{{ meta.title if meta and meta.title else 'AI Tool Marketplace' }}" />
+    <meta property="og:description" content="{{ meta.description if meta and meta.description else '' }}" />
+    <meta property="og:type" content="website" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: [
+                "ui-sans-serif",
+                "system-ui",
+                "-apple-system",
+                "Segoe UI",
+                "Inter",
+                "Roboto",
+                "Arial",
+                "Noto Sans",
+                "sans-serif",
+              ],
+            },
+            boxShadow: {
+              glass: "0 10px 30px rgba(0,0,0,0.12)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
+  </head>
+
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="app-bg"></div>
+
+    <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/60 backdrop-blur-xl">
+      <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
+        <a href="{{ url_for('home') }}" class="group inline-flex items-center gap-2">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-white/10 ring-1 ring-white/15">
+            <span class="text-sm font-semibold tracking-tight">AI</span>
+          </span>
+          <span class="text-base font-semibold tracking-tight text-white group-hover:text-white/90">Tool Marketplace</span>
+        </a>
+
+        <nav class="hidden items-center gap-6 md:flex">
+          <a class="nav-link" href="{{ url_for('tools_index') }}">Browse</a>
+          <a class="nav-link" href="{{ url_for('submit_tool') }}">Submit a tool</a>
+        </nav>
+
+        <a
+          href="{{ url_for('tools_index') }}"
+          class="inline-flex items-center justify-center rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 hover:bg-white/15"
+        >
+          Explore
+        </a>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mt-20 border-t border-white/10">
+      <div class="mx-auto w-full max-w-6xl px-4 py-10">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <p class="text-sm text-white/70">Curated AI tools. No login required.</p>
+          <div class="flex items-center gap-4">
+            <a class="nav-link" href="{{ url_for('tools_index') }}">Browse tools</a>
+            <a class="nav-link" href="{{ url_for('submit_tool') }}">Submit</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

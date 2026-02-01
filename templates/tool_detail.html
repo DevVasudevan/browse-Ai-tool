@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="mx-auto w-full max-w-6xl px-4 pt-10">
+    <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+      <div class="min-w-0">
+        <div class="flex items-center gap-4">
+          <div class="grid h-14 w-14 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/15">
+            <span class="text-base font-semibold text-white/90">{{ tool.icon or 'AI' }}</span>
+          </div>
+          <div class="min-w-0">
+            <h1 class="truncate text-3xl font-semibold tracking-tight text-white">{{ tool.name }}</h1>
+            <p class="mt-1 text-sm text-white/70">{{ tool.description }}</p>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span class="pill">{{ tool.category }}</span>
+          <span class="badge">{{ tool.pricing_type }}</span>
+          {% for tag in (tool.use_cases or []) %}
+            <span class="pill pill-muted">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="flex shrink-0 gap-3">
+        <a
+          href="{{ tool.url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-white/90"
+        >
+          Visit Tool
+        </a>
+        <a
+          href="{{ url_for('tools_index') }}"
+          class="inline-flex items-center justify-center rounded-xl bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/15 hover:bg-white/15"
+        >
+          Back
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-10 grid gap-4 lg:grid-cols-12">
+      <div class="glass-card p-6 lg:col-span-7">
+        <h2 class="text-base font-semibold text-white">Overview</h2>
+        <p class="mt-3 text-sm text-white/70">{{ tool.description }}</p>
+
+        <div class="mt-6">
+          <h3 class="text-sm font-semibold text-white/80">Best use cases</h3>
+          <div class="mt-3 flex flex-wrap gap-2">
+            {% for uc in (tool.use_cases or []) %}
+              <span class="pill">{{ uc }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card p-6 lg:col-span-5">
+        <h2 class="text-base font-semibold text-white">Quick facts</h2>
+        <dl class="mt-4 grid gap-4">
+          <div>
+            <dt class="text-xs font-semibold text-white/60">Pricing</dt>
+            <dd class="mt-1 text-sm font-semibold text-white">{{ tool.pricing_type }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold text-white/60">Popularity</dt>
+            <dd class="mt-1 text-sm font-semibold text-white">{{ tool.popularity }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold text-white/60">Trending</dt>
+            <dd class="mt-1 text-sm font-semibold text-white">{{ tool.trending }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="glass-card p-6 lg:col-span-6">
+        <h2 class="text-base font-semibold text-white">Pros</h2>
+        <ul class="mt-4 space-y-2 text-sm text-white/70">
+          {% for p in (tool.pros or []) %}
+            <li class="flex gap-2"><span class="text-emerald-300">•</span><span>{{ p }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="glass-card p-6 lg:col-span-6">
+        <h2 class="text-base font-semibold text-white">Cons</h2>
+        <ul class="mt-4 space-y-2 text-sm text-white/70">
+          {% for c in (tool.cons or []) %}
+            <li class="flex gap-2"><span class="text-rose-300">•</span><span>{{ c }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+{% endblock %}
